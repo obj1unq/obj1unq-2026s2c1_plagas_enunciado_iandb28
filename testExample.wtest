@@ -1,9 +1,56 @@
-import example.pepita
+import elementos.*
+describe "Test de elementos" {
+  const hogarBueno = new Hogar(mugre = 4, confort = 8)
+  const hogarMalo = new Hogar(mugre = 5, confort = 8)
+  const huertaBuena = new Huerta(capacidadDeProduccion = 150)
+  const huertaMala = new Huerta(capacidadDeProduccion = 50)
+  const mascotaBuena = new Mascota(nivelDeSalud = 300)
+  const mascotaMala = new Mascota(nivelDeSalud = 200)
+  const barrio = new Barrio()
 
-describe "group of tests for pepita" {
+  test "Un hogar es favorable para la vida humana" {
+    assert.that(hogarBueno.esFavorable())
+  }
 
-  test "pepita has initial energy" {
-    assert.equals(100, pepita.energy())
+  test "Un hogar no es favorable para la vida humana" {
+    assert.notThat(hogarMalo.esFavorable())
+  }
+
+  test "Una huerta es favorable para la vida humana" {
+    assert.that(huertaBuena.esFavorable())
+  }
+
+  test "Una huerta no es favorable para la vida humana" {
+    assert.notThat(huertaMala.esFavorable())
+  }
+
+  test "El nivel de producción no es fijo" {
+    nivelDeProduccionDeHuertas.nivel(200)
+    assert.notThat(huertaBuena.esFavorable())
+  }
+
+  test "Cambiar el nivel de producción afecta a todas las huertas" {
+    nivelDeProduccionDeHuertas.nivel(40)
+    assert.that(huertaMala.esFavorable())
+    assert.that(huertaBuena.esFavorable())
+  }
+
+  test "Una mascota es favorable para la vida humana" {
+    assert.that(mascotaBuena.esFavorable())
+  }
+
+  test "Un barrio es copado" {
+    barrio.agregarElemento(hogarBueno)
+    barrio.agregarElemento(huertaBuena)
+    barrio.agregarElemento(mascotaMala)
+    assert.that(barrio.esCopado())
+  }
+
+  test "Un barrio no es copado" {
+    barrio.agregarElemento(hogarBueno)
+    barrio.agregarElemento(huertaMala)
+    barrio.agregarElemento(mascotaMala)
+    assert.notThat(barrio.esCopado())
   }
 
 }
