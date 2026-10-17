@@ -1,56 +1,137 @@
+import plagas.*
 import elementos.*
 describe "Test de elementos" {
-  const hogarBueno = new Hogar(mugre = 4, confort = 8)
-  const hogarMalo = new Hogar(mugre = 5, confort = 8)
-  const huertaBuena = new Huerta(capacidadDeProduccion = 150)
-  const huertaMala = new Huerta(capacidadDeProduccion = 50)
-  const mascotaBuena = new Mascota(nivelDeSalud = 300)
-  const mascotaMala = new Mascota(nivelDeSalud = 200)
   const barrio = new Barrio()
 
   test "Un hogar es favorable para la vida humana" {
+    const hogarBueno = new Hogar(mugre = 4, confort = 8)
     assert.that(hogarBueno.esFavorable())
   }
 
   test "Un hogar no es favorable para la vida humana" {
+    const hogarMalo = new Hogar(mugre = 5, confort = 8)
     assert.notThat(hogarMalo.esFavorable())
   }
 
   test "Una huerta es favorable para la vida humana" {
+    const huertaBuena = new Huerta(capacidadDeProduccion = 150)
     assert.that(huertaBuena.esFavorable())
   }
 
   test "Una huerta no es favorable para la vida humana" {
+    const huertaMala = new Huerta(capacidadDeProduccion = 50)
     assert.notThat(huertaMala.esFavorable())
   }
 
   test "El nivel de producción no es fijo" {
+    const huertaBuena = new Huerta(capacidadDeProduccion = 150)
     nivelDeProduccionDeHuertas.nivel(200)
     assert.notThat(huertaBuena.esFavorable())
   }
 
   test "Cambiar el nivel de producción afecta a todas las huertas" {
+    const huertaMala = new Huerta(capacidadDeProduccion = 50)
+    const huertaBuena = new Huerta(capacidadDeProduccion = 150)
     nivelDeProduccionDeHuertas.nivel(40)
     assert.that(huertaMala.esFavorable())
     assert.that(huertaBuena.esFavorable())
   }
 
   test "Una mascota es favorable para la vida humana" {
+    const mascotaBuena = new Mascota(nivelDeSalud = 300)
     assert.that(mascotaBuena.esFavorable())
   }
 
+  test "Una mascota no es favorable para la vida humana" {
+    const mascotaMala = new Mascota(nivelDeSalud = 200)
+    assert.notThat(mascotaMala.esFavorable())
+  }
+  
+
   test "Un barrio es copado" {
-    barrio.agregarElemento(hogarBueno)
-    barrio.agregarElemento(huertaBuena)
-    barrio.agregarElemento(mascotaMala)
+    barrio.agregarElemento(new Hogar(mugre = 4, confort = 8))
+    barrio.agregarElemento(new Huerta(capacidadDeProduccion = 150))
+    barrio.agregarElemento(new Mascota(nivelDeSalud = 200))
     assert.that(barrio.esCopado())
   }
 
   test "Un barrio no es copado" {
-    barrio.agregarElemento(hogarBueno)
-    barrio.agregarElemento(huertaMala)
-    barrio.agregarElemento(mascotaMala)
+    barrio.agregarElemento(new Hogar(mugre = 4, confort = 8))
+    barrio.agregarElemento(new Huerta(capacidadDeProduccion = 50))
+    barrio.agregarElemento(new Mascota(nivelDeSalud = 200))
     assert.notThat(barrio.esCopado())
   }
 
+}
+
+describe "Test de plagas" {
+  test "El nivel de daño de una plaga de cucarachas es la mitad de su poblacion" {
+    const plagaDe30Cucarachas = new PlagaDeCucarachas(poblacion = 30, pesoPromedio = 8)
+    assert.equals(15, plagaDe30Cucarachas.nivelDeDaño())
+  }
+
+  test "Una plaga de cucarachas no transmite enfermedades si su peso promedio es menor a 10" {
+    const plagaDe25Cucarachas = new PlagaDeCucarachas(poblacion = 25, pesoPromedio = 9)
+    assert.notThat(plagaDe25Cucarachas.transmiteEnfermedades())
+  }
+
+  test "Una plaga de cucarachas transmite enfermedades si su peso promedio es igual o mayor a 10" {
+    const plagaDe35Cucarachas = new PlagaDeCucarachas(poblacion = 35, pesoPromedio = 10)
+    assert.that(plagaDe35Cucarachas.transmiteEnfermedades())
+  }
+
+  test "Una plaga de cucarachas tiene que tener una población mayor o igual a 10 para transmitir enfermedades incluso si cumple con el peso promedio" {
+    const plagaDe5Cucarachas = new PlagaDeCucarachas(poblacion = 5, pesoPromedio = 11)
+    assert.notThat(plagaDe5Cucarachas.transmiteEnfermedades())
+  }
+
+  test "El nivel de daño de una plaga de pulgas es el doble de su poblacion" {
+    const plagaDe30Pulgas = new PlagaDePulgas(poblacion = 30)
+    assert.equals(60, plagaDe30Pulgas.nivelDeDaño())
+  }
+
+  test "Una plaga de pulgas no transmite enfermedades si su población es menor a 10" {
+    const plagaDe5Pulgas = new PlagaDePulgas(poblacion = 5)
+    assert.notThat(plagaDe5Pulgas.transmiteEnfermedades())
+  }
+
+  test "Una plaga de pulgas transmite enfermedades si su población es igual o mayor a 10" {
+    const plagaDe35Pulgas = new PlagaDePulgas(poblacion = 35)
+    assert.that(plagaDe35Pulgas.transmiteEnfermedades())
+  }
+
+    test "El nivel de daño de una plaga de garrapatas es el doble de su poblacion" {
+    const plagaDe30Garrapatas = new PlagaDeGarrapatas(poblacion = 30)
+    assert.equals(60, plagaDe30Garrapatas.nivelDeDaño())
+  }
+
+  test "Una plaga de garrapatas no transmite enfermedades si su población es menor a 10" {
+    const plagaDe5Garrapatas = new PlagaDeGarrapatas(poblacion = 5)
+    assert.notThat(plagaDe5Garrapatas.transmiteEnfermedades())
+  }
+
+  test "Una plaga de garrapatas transmite enfermedades si su población es igual o mayor a 10" {
+    const plagaDe35Garrapatas = new PlagaDeGarrapatas(poblacion = 35)
+    assert.that(plagaDe35Garrapatas.transmiteEnfermedades())
+  }
+
+    test "El nivel de daño de una plaga de mosquitos es el mismo que su poblacion" {
+    const plagaDe30Mosquitos = new PlagaDeMosquitos(poblacion = 30)
+    assert.equals(30, plagaDe30Mosquitos.nivelDeDaño())
+  }
+
+  test "Una plaga de mosquitos no transmite enfermedades si su población no es múltiplo de 3" {
+    const plagaDe25Mosquitos = new PlagaDeMosquitos(poblacion = 25)
+    assert.notThat(plagaDe25Mosquitos.transmiteEnfermedades())
+  }
+
+  test "Una plaga de mosquitos transmite enfermedades si su población es múltiplo de 3" {
+    const plagaDe15Mosquitos = new PlagaDeMosquitos(poblacion = 15)
+    assert.that(plagaDe15Mosquitos.transmiteEnfermedades())
+  }
+
+  test "Una plaga de mosquitos tiene que tener una población mayor o igual a 10 para transmitir enfermedades incluso si cumple con que sea múltiplo de 3" {
+    const plagaDe9Mosquitos = new PlagaDeMosquitos(poblacion = 9)
+    assert.notThat(plagaDe9Mosquitos.transmiteEnfermedades())
+  }
 }

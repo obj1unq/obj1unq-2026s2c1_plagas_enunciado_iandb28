@@ -5,6 +5,10 @@ class Hogar {
     method esFavorable() {
         return mugre <= (confort / 2)
     }
+
+    method recibeAtaqueDe(plaga) {
+        mugre += plaga.nivelDeDaño()
+    }
 }
 
 class Huerta {
@@ -12,6 +16,13 @@ class Huerta {
 
     method esFavorable() {
         return capacidadDeProduccion > nivelDeProduccionDeHuertas.nivel()
+    }
+
+    method recibeAtaqueDe(plaga) {
+        if (plaga.transmiteEnfermedades()) {
+            capacidadDeProduccion -= 10
+        }
+        capacidadDeProduccion -= (plaga.nivelDeDaño() * 0.1)
     }
 }
 
@@ -24,6 +35,12 @@ class Mascota {
     
     method esFavorable() {
         return nivelDeSalud > 250
+    }
+
+    method recibeAtaqueDe(plaga) {
+        if (plaga.transmiteEnfermedades()) {
+            nivelDeSalud -= plaga.nivelDeDaño()
+        }
     }
 }
 
