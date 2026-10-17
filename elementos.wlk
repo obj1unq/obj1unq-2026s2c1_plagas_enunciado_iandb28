@@ -1,6 +1,6 @@
 class Hogar {
     var property mugre
-    var confort
+    const confort
 
     method esFavorable() {
         return mugre <= (confort / 2)

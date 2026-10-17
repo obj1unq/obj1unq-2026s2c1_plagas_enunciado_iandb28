@@ -170,3 +170,31 @@ describe "Test de efectos de elementos al recibir ataque" {
     assert.equals(40, mascotaSaludable.nivelDeSalud())
   }
 }
+
+describe "Test de efectos de plagas al atacar" {
+  const hogarVictima = new Hogar(mugre = 4, confort = 8)
+  test "Una plaga de pulgas aumenta su poblacion un 10% al atacar" {
+    const plagaDePulgas = new PlagaDePulgas(poblacion = 20)
+    plagaDePulgas.atacaA(hogarVictima)
+    assert.equals(22, plagaDePulgas.poblacion())
+  }
+
+  test "Una plaga cambia al elemento que ataca" {
+    const plagaDeMosquitos = new PlagaDeMosquitos(poblacion = 10)
+    plagaDeMosquitos.atacaA(hogarVictima)
+    assert.equals(15, hogarVictima.mugre()) // el nivel de daño de la plaga es 10 pero aumenta un 10% al momento de atacar, es decir queda en 11
+  }
+
+  test "Una plaga de cucarachas aumenta su poblacion un 10% y su peso promedio en 2 gramos al atacar" {
+    const plagaDeCucarachas = new PlagaDeCucarachas(poblacion = 20, pesoPromedio = 5)
+    plagaDeCucarachas.atacaA(hogarVictima)
+    assert.equals(22, plagaDeCucarachas.poblacion())
+    assert.equals(7, plagaDeCucarachas.pesoPromedio())
+  }
+
+  test "Una plaga de garrapatas aumenta su poblacion un 20% al atacar" {
+    const plagaDeGarrapatas = new PlagaDeGarrapatas(poblacion = 20)
+    plagaDeGarrapatas.atacaA(hogarVictima)
+    assert.equals(24, plagaDeGarrapatas.poblacion())
+  }
+}
