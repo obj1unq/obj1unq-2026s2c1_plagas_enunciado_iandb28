@@ -135,3 +135,38 @@ describe "Test de plagas" {
     assert.notThat(plagaDe9Mosquitos.transmiteEnfermedades())
   }
 }
+
+describe "Test de efectos de elementos al recibir ataque" {
+  const plagaSinEnfermedades = new PlagaDePulgas(poblacion = 5) // nivel de daño: 10
+  const plagaConEnfermedades = new PlagaDePulgas(poblacion = 15) // nivel de daño: 30
+  
+  test "Un hogar aumenta su mugre en la misma cantidad del nivel de daño de la plaga atacante" {
+    const hogar = new Hogar(mugre = 4, confort = 8)
+    hogar.recibeAtaqueDe(plagaSinEnfermedades)
+    assert.equals(14, hogar.mugre())
+  }
+
+  test "Una huerta baja su capacidad de producción en un 10% del nivel de daño de la plaga atacante que no transmite enfermedades" {
+    const huerta = new Huerta(capacidadDeProduccion = 20)
+    huerta.recibeAtaqueDe(plagaSinEnfermedades)
+    assert.equals(19, huerta.capacidadDeProduccion())
+  }
+
+  test "Una huerta baja su capacidad de producción en 10 puntos y un 10% del nivel de daño de la plaga atacante que transmite enfermedades" {
+    const huertaGrande = new Huerta(capacidadDeProduccion = 50)
+    huertaGrande.recibeAtaqueDe(plagaConEnfermedades)
+    assert.equals(37, huertaGrande.capacidadDeProduccion())
+  }
+
+  test "Una mascota baja su nivel de salud en la misma cantidad del nivel de daño de la plaga atacante que transmite enfermedades" {
+    const mascota = new Mascota(nivelDeSalud = 35)
+    mascota.recibeAtaqueDe(plagaConEnfermedades)
+    assert.equals(5, mascota.nivelDeSalud())
+  }
+
+  test "Una mascota no recibe cambios si la la plaga atacante no transmite enfermedades" {
+    const mascotaSaludable = new Mascota(nivelDeSalud = 40)
+    mascotaSaludable.recibeAtaqueDe(plagaSinEnfermedades)
+    assert.equals(40, mascotaSaludable.nivelDeSalud())
+  }
+}

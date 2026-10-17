@@ -1,5 +1,5 @@
 class Hogar {
-    var mugre
+    var property mugre
     var confort
 
     method esFavorable() {
@@ -12,7 +12,7 @@ class Hogar {
 }
 
 class Huerta {
-    var capacidadDeProduccion
+    var property capacidadDeProduccion
 
     method esFavorable() {
         return capacidadDeProduccion > nivelDeProduccionDeHuertas.nivel()
@@ -31,7 +31,7 @@ object nivelDeProduccionDeHuertas {
 }
 
 class Mascota {
-    var nivelDeSalud
+    var property nivelDeSalud
     
     method esFavorable() {
         return nivelDeSalud > 250
